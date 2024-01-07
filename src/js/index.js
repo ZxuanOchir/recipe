@@ -2,7 +2,7 @@
 // search.doSearch().then(r => console.log(r));
 // require("@babel/polyfill");
 import Search from "./model/Search";
-import { elements , renderLoader, clearLoader} from "./view/base";
+import { clearLoader, elements, renderLoader } from "./view/base";
 import * as searchView from "./view/searchView";
 /*
 *-Web app төлөв
@@ -22,7 +22,7 @@ const controlSearch = async () => {
         state.search = new Search(query);
         // 3) Хайлт хийхэд зориулцж UI ийг бэлтгэнэ.
         searchView.clearSearchQuery();
-        searchView.clearSearchResult();
+        searchView.clearSearchResult(); // garj irsen utgani daraa dahin hailt hiihed tseverleh
         renderLoader(elements.searchResultDiv);
         // 4) Хайлтыг гүйцэтгэнэ.
         await state.search.doSearch();
@@ -37,3 +37,14 @@ elements.searchForm.addEventListener('submit', r => {
     r.preventDefault(); // default submit iig boliulah
     controlSearch();
 });
+
+elements.pageButtons.addEventListener("click", e => {
+    const btn = e.target.closest('.btn-inline');
+
+    if(btn) {
+        const gotoPageNumber = parseInt(btn.dataset.goto, 10);
+        searchView.clearSearchResult();
+        searchView.renderRecipies(state.search.result, gotoPageNumber);
+    }
+});
+//closest css elementin dom deer bui hamgiin oir elementiig olj ugdug
