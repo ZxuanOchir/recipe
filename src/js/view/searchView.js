@@ -1,7 +1,7 @@
 import { elements } from "./base"
 // Private function
 const renderRecipe = recipe => {
-    console.log(recipe);
+    // console.log(recipe);
     const markup = `
                 <li>
                         <a class="results__link" href="#${recipe.recipe_id}">
@@ -26,6 +26,7 @@ export const clearSearchResult = () => {
     elements.pageButtons.innerHTML = '';
 }
 export const getInput = () => elements.searchInput.value;
+
 export const renderRecipies = (recipes, currentPage = 1, resPerPage = 10) => {
     // default utga page = 1; resPerPage = 10;
     //Хайлтын үр дүнг хуудаслаж үзүүлэх

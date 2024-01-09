@@ -4,6 +4,7 @@
 import Search from "./model/Search";
 import { clearLoader, elements, renderLoader } from "./view/base";
 import * as searchView from "./view/searchView";
+import Recipe from "./model/Recipes";
 /*
 *-Web app төлөв
 *-Хайлтын query үр дүн
@@ -13,6 +14,10 @@ import * as searchView from "./view/searchView";
 */
 
 const state = {};
+
+/*
+* Хайлтын контроллэр = Model ==> Controller <== View
+*/
 const controlSearch = async () => {
     // 1) Вэбээс хайлтын түлхүүр үгийг гаргаж авна.
     const query = searchView.getInput();
@@ -21,8 +26,8 @@ const controlSearch = async () => {
         // 2) Шинээр хайлтын обект үүсгэж өгнө.
         state.search = new Search(query);
         // 3) Хайлт хийхэд зориулцж UI ийг бэлтгэнэ.
-        searchView.clearSearchQuery();
-        searchView.clearSearchResult(); // garj irsen utgani daraa dahin hailt hiihed tseverleh
+        searchView.clearSearchQuery();// search iin form tseverleh
+        searchView.clearSearchResult(); // garj irsen utgani daraa dahin hailt hiihed list tseverleh
         renderLoader(elements.searchResultDiv);
         // 4) Хайлтыг гүйцэтгэнэ.
         await state.search.doSearch();
@@ -48,3 +53,30 @@ elements.pageButtons.addEventListener("click", e => {
     }
 });
 //closest css elementin dom deer bui hamgiin oir elementiig olj ugdug
+
+const r = new Recipe(47746);
+r.getRecipe();
+
+
+/*
+* Жорын контроллэр
+*/
+const controlRecipe = async () => {
+    //1) URL- aac ID салгаж авна
+const id = window.location.hash.replace('#', '');
+// console.log(id);
+    //2) Жорын моделийг үүсгэж өгнө.
+state.recipe = new Recipe(id);
+    //3) UI дэлгэцийг бэлтгэнэ.
+
+    //4) Жороо татаж авчирна.
+await state.recipe.getRecipe();
+    //5) Жорыг гүйцэтгэх хугацаа болон орцыг тооцоолно.
+    
+state.recipe.calcTime();
+state.recipe.calcHuniiToo();
+
+    //6) Жороо үзүүлнэ.
+    console.log(state.recipe);
+}
+window.addEventListener('hashchange', controlRecipe);
